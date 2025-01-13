@@ -74,7 +74,10 @@ public class HotfixParser
                     else
                     {
                         var link = string.Join("/", url.Split('/').SkipLast(1));
-                        asbLinks.Add($"{_hotfixJson.assetBundleUrl}/{baseAssetDownloadURL}/client/{_platform}/Block/{block.assetName}.block");
+                        string[] urlParts = _hotfixJson.assetBundleUrl.Split('/');
+                        urlParts[^1] = baseAssetDownloadURL;
+                        string newurl = string.Join("/", urlParts);
+                        asbLinks.Add($"{newurl}/client/{_platform}/Block/{block.assetName}.block");
                     }
                 }
             }

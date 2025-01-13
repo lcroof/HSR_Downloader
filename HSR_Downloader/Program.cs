@@ -40,10 +40,26 @@ namespace HSR_DataDownloader
             {
                 Directory.CreateDirectory("Lua");
             }
+            if (!Path.Exists("Links"))
+            {
+                Directory.CreateDirectory("Links");
+            }
 
             Downloader downloader_asb = new(logger, "Asb");
             Downloader downloader_lua = new(logger, "Lua");
             Downloader downloader_designData = new(logger, "DesignData");
+
+            string asbLinksFilePath = Path.Combine("Links", "asbLinks.txt");
+            File.WriteAllLines(asbLinksFilePath, hotfixParser.asbLinks.Distinct());
+            Console.WriteLine($"Asb links written to {asbLinksFilePath}");
+
+            string luaLinksFilePath = Path.Combine("Links", "luaLinks.txt");
+            File.WriteAllLines(luaLinksFilePath, hotfixParser.luaLinks.Distinct());
+            Console.WriteLine($"Lua links written to {luaLinksFilePath}");
+
+            string exResourceLinksFilePath = Path.Combine("Links", "exResourceLinks.txt");
+            File.WriteAllLines(exResourceLinksFilePath, hotfixParser.exResourceLinks.Distinct());
+            Console.WriteLine($"DesignData links written to {exResourceLinksFilePath}");
 
             await downloader_asb.DownloadFilesAsync(hotfixParser.asbLinks.Distinct().ToArray());
             await downloader_lua.DownloadFilesAsync(hotfixParser.luaLinks.Distinct().ToArray());
